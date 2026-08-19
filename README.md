@@ -48,8 +48,8 @@ npm run dev             # Starts Vite development server on http://localhost:300
 
 | Username | Default Password | Access Level |
 | :--- | :--- | :--- |
-| `dasun_navindu` | `Password123` | Authorized User |
-| `gayan_maduranga` | `Password123` | Authorized User |
+| `dasun_navindu` | `!@$$@%^$%^!@%^` | Authorized User |
+| `gayan_maduranga` | `!@$$@%^$%^!@%^` | Authorized User |
 
 ---
 
