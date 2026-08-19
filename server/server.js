@@ -24,6 +24,13 @@ app.use('/api/workouts', workoutRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/progress', progressRoutes);
 
+// Route Aliases
+app.use('/auth', authRoutes);
+app.use('/workouts', workoutRoutes);
+app.use('/users', userRoutes);
+app.use('/progress', progressRoutes);
+
+
 // Health check endpoint
 app.get('/', (req, res) => {
   res.json({

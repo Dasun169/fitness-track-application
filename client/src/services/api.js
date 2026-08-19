@@ -1,7 +1,14 @@
 import axios from 'axios';
 
+// Get API base URL and normalize /api suffix
+let rawBaseURL = import.meta.env.VITE_API_URL || '/api';
+
+if (rawBaseURL !== '/api' && !rawBaseURL.endsWith('/api')) {
+  rawBaseURL = rawBaseURL.replace(/\/+$/, '') + '/api';
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: rawBaseURL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -24,7 +31,6 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Clear token on 401 Unauthorized if not on login page
       if (window.location.pathname !== '/login') {
         localStorage.removeItem('gym_tracker_token');
         localStorage.removeItem('gym_tracker_user');
