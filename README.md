@@ -76,13 +76,3 @@ npm run dev             # Starts Vite development server on http://localhost:300
 - `GET /api/progress/:exerciseName` - Get historical date vs weight progression for line charts.
 
 ---
-
-## ⚙️ Environment Variables
-
-### Server (`server/.env`)
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/gym_tracker
-JWT_SECRET=gym_activity_tracker_jwt_secret_key_2024_super_secure
-NODE_ENV=development
-```
