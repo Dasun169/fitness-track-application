@@ -27,6 +27,80 @@ router.get('/exercises', async (req, res) => {
   }
 });
 
+// @route   GET /api/progress/bar-chart
+// @desc    Get exercise average weight comparison data per workout set for side-by-side bar chart
+// @access  Protected
+router.get('/bar-chart', async (req, res) => {
+  try {
+    const { workoutSetId } = req.query;
+
+    let exQuery = {};
+    if (workoutSetId) {
+      exQuery.workoutSetId = workoutSetId;
+    } else {
+      const userSets = await WorkoutSet.find({}).select('_id');
+      const setIds = userSets.map((set) => set._id);
+      exQuery.workoutSetId = { $in: setIds };
+    }
+
+    // Fetch exercises in these workout sets populated with user info
+    const exercises = await Exercise.find(exQuery).populate('userId', 'username');
+
+    // Group by exercise name and username
+    const statsMap = new Map();
+
+    exercises.forEach((ex) => {
+      if (!ex.name) return;
+      const nameKey = ex.name.trim();
+
+      let username = ex.userId && ex.userId.username ? ex.userId.username : null;
+      if (!username && req.user) {
+        username = req.user.username;
+      }
+
+      if (!statsMap.has(nameKey)) {
+        statsMap.set(nameKey, {
+          dasun_navindu: { sum: 0, count: 0 },
+          gayan_maduranga: { sum: 0, count: 0 },
+        });
+      }
+
+      const userStats = statsMap.get(nameKey);
+      if (username) {
+        if (!userStats[username]) {
+          userStats[username] = { sum: 0, count: 0 };
+        }
+
+        const w = Number(ex.weight) || 0;
+        if (w > 0) {
+          userStats[username].sum += w;
+          userStats[username].count += 1;
+        }
+      }
+    });
+
+    const barData = Array.from(statsMap.entries()).map(([nameKey, userStats]) => {
+      const dasunData = userStats['dasun_navindu'];
+      const gayanData = userStats['gayan_maduranga'];
+
+      // Preserve exact floating-point precision up to 2 decimal places
+      const dasunAvg = dasunData && dasunData.count > 0 ? +(dasunData.sum / dasunData.count).toFixed(2) : 0;
+      const gayanAvg = gayanData && gayanData.count > 0 ? +(gayanData.sum / gayanData.count).toFixed(2) : 0;
+
+      return {
+        exerciseName: nameKey,
+        dasun_navindu: dasunAvg,
+        gayan_maduranga: gayanAvg,
+      };
+    }).sort((a, b) => a.exerciseName.localeCompare(b.exerciseName));
+
+    res.json(barData);
+  } catch (error) {
+    console.error('Error fetching bar chart data:', error);
+    res.status(500).json({ message: 'Failed to fetch bar chart comparison data' });
+  }
+});
+
 // @route   GET /api/progress/:exerciseName
 // @desc    Get progress history for an exercise with user comparison and date range filtering
 // @access  Protected

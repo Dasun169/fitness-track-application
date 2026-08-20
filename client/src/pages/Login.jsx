@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Dumbbell, Lock, User, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Dumbbell, Lock, User, AlertCircle, ArrowRight, ShieldCheck, Sun, Moon } from 'lucide-react';
 
 const Login = () => {
   const [username, setUsername] = useState('dasun_navindu');
@@ -10,6 +11,7 @@ const Login = () => {
   const [error, setError] = useState('');
 
   const { login } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -44,29 +46,41 @@ const Login = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '1.5rem',
-      background: 'radial-gradient(circle at 50% 30%, rgba(6, 182, 212, 0.12) 0%, transparent 60%)',
+      padding: '1.25rem',
+      position: 'relative',
     }}>
-      <div className="glass-card" style={{ width: '100%', maxWidth: '440px', padding: '2.5rem 2rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+      {/* Theme Toggle Button on Login Screen */}
+      <div style={{ position: 'absolute', top: '1.25rem', right: '1.25rem' }}>
+        <button
+          onClick={toggleTheme}
+          className="btn btn-secondary btn-icon"
+          title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Theme`}
+          style={{ borderRadius: '50%' }}
+        >
+          {theme === 'light' ? <Moon size={18} color="var(--text-main)" /> : <Sun size={18} color="#f59e0b" />}
+        </button>
+      </div>
+
+      <div className="glass-card" style={{ width: '100%', maxWidth: '430px', padding: '2.25rem 1.75rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
           <div style={{
-            width: '60px',
-            height: '60px',
+            width: '56px',
+            height: '56px',
             background: 'var(--primary-gradient)',
             borderRadius: 'var(--radius-lg)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 1.25rem auto',
-            boxShadow: '0 8px 24px rgba(0, 242, 254, 0.4)'
+            margin: '0 auto 1.15rem auto',
+            boxShadow: 'var(--shadow-btn)'
           }}>
-            <Dumbbell size={32} color="#0b0f19" strokeWidth={2.5} />
+            <Dumbbell size={30} color="var(--primary-btn-text)" strokeWidth={2.5} />
           </div>
           
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-main)' }}>
+          <h1 style={{ fontSize: '1.65rem', fontWeight: 800, color: 'var(--text-main)' }}>
             GYM TRACKER
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.2rem' }}>
             Authorized User Authentication Portal
           </p>
         </div>
@@ -87,12 +101,12 @@ const Login = () => {
                 className="form-control"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                style={{ paddingLeft: '2.75rem' }}
+                style={{ paddingLeft: '2.5rem' }}
               >
                 <option value="dasun_navindu">dasun_navindu</option>
                 <option value="gayan_maduranga">gayan_maduranga</option>
               </select>
-              <User size={18} color="var(--text-muted)" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+              <User size={18} color="var(--text-muted)" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }} />
             </div>
           </div>
 
@@ -106,9 +120,9 @@ const Login = () => {
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={{ paddingLeft: '2.75rem' }}
+                style={{ paddingLeft: '2.5rem' }}
               />
-              <Lock size={18} color="var(--text-muted)" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+              <Lock size={18} color="var(--text-muted)" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }} />
             </div>
           </div>
 
@@ -130,13 +144,13 @@ const Login = () => {
         </form>
 
         {/* Quick User Selector Help Chips */}
-        <div style={{ marginTop: '2rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border-color)', textAlign: 'center' }}>
+        <div style={{ marginTop: '1.75rem', paddingTop: '1.15rem', borderTop: '1px solid var(--border-color)', textAlign: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', color: 'var(--text-dim)', fontSize: '0.75rem', marginBottom: '0.75rem' }}>
             <ShieldCheck size={14} color="var(--primary-cyan)" />
             <span>Pre-configured Accounts (Default Pass: Password123)</span>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <button
               type="button"
               onClick={() => handleQuickSelect('dasun_navindu')}

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Get API base URL and normalize /api suffix
-let rawBaseURL = import.meta.env.VITE_API_URL || '/api';
+let rawBaseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 if (rawBaseURL !== '/api' && !rawBaseURL.endsWith('/api')) {
   rawBaseURL = rawBaseURL.replace(/\/+$/, '') + '/api';

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import WorkoutCard from '../components/WorkoutCard';
 import ProgressChart from '../components/ProgressChart';
+import WorkoutBarChart from '../components/WorkoutBarChart';
 import api from '../services/api';
 import { Plus, BarChart2, Calendar, AlertCircle, Dumbbell, X } from 'lucide-react';
 
@@ -95,19 +96,20 @@ const Home = () => {
 
       <main className="main-content">
         {/* Dashboard Header Banner */}
-        <div className="glass-card" style={{ padding: '2rem', marginBottom: '2rem', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem' }}>
+        <div className="glass-card" style={{ padding: '1.75rem', marginBottom: '2rem', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '1.25rem' }}>
           <div>
             <span className="badge badge-cyan" style={{ marginBottom: '0.5rem' }}>DASHBOARD OVERVIEW</span>
-            <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Workout Performance Tracker</h1>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
+            <h1 style={{ fontSize: '1.7rem', fontWeight: 800 }}>Workout Performance Tracker</h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
               Manage monthly training blocks & analyze exercise progression over time
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap', width: '100%', maxWidth: '380px' }}>
             <button
               onClick={() => setShowProgress(!showProgress)}
               className="btn btn-secondary"
+              style={{ flex: 1, minWidth: '140px' }}
             >
               <BarChart2 size={18} color="var(--primary-cyan)" />
               <span>{showProgress ? 'Hide Analytics' : 'Show Analytics'}</span>
@@ -116,6 +118,7 @@ const Home = () => {
             <button
               onClick={() => setIsModalOpen(true)}
               className="btn btn-primary"
+              style={{ flex: 1, minWidth: '150px' }}
             >
               <Plus size={18} />
               <span>New Workout Set</span>
@@ -133,11 +136,11 @@ const Home = () => {
 
         {/* Workout Sets Grid Section */}
         <section style={{ marginBottom: '2.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Dumbbell size={20} color="var(--primary-cyan)" />
               <h2 style={{ fontSize: '1.3rem', fontWeight: 700 }}>Monthly Workout Sets</h2>
-              <span className="badge badge-cyan" style={{ marginLeft: '0.5rem' }}>{workoutSets.length}</span>
+              <span className="badge badge-cyan" style={{ marginLeft: '0.25rem' }}>{workoutSets.length}</span>
             </div>
           </div>
 
@@ -147,8 +150,8 @@ const Home = () => {
               <p>Fetching workout sets...</p>
             </div>
           ) : workoutSets.length === 0 ? (
-            <div className="glass-card" style={{ padding: '3.5rem 1.5rem', textAlign: 'center' }}>
-              <Calendar size={48} color="var(--text-dim)" style={{ marginBottom: '1rem' }} />
+            <div className="glass-card" style={{ padding: '3rem 1.25rem', textAlign: 'center' }}>
+              <Calendar size={44} color="var(--text-dim)" style={{ marginBottom: '1rem' }} />
               <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>No Workout Sets Created Yet</h3>
               <p style={{ color: 'var(--text-muted)', maxWidth: '420px', margin: '0 auto 1.5rem auto', fontSize: '0.9rem' }}>
                 Start tracking your monthly gym routines by adding your first workout set!
@@ -172,7 +175,12 @@ const Home = () => {
         </section>
 
         {/* Collapsable Progress Section */}
-        {showProgress && <ProgressChart />}
+        {showProgress && (
+          <>
+            <ProgressChart />
+            <WorkoutBarChart />
+          </>
+        )}
 
         {/* Create Workout Set Modal */}
         {isModalOpen && (
@@ -182,14 +190,14 @@ const Home = () => {
                 <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Create New Workout Set</h3>
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                  style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.25rem' }}
                 >
                   <X size={20} />
                 </button>
               </div>
 
               <form onSubmit={handleCreateSet}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
                   <div className="form-group">
                     <label className="form-label">Month</label>
                     <select
@@ -256,7 +264,7 @@ const Home = () => {
         {deleteTarget && (
           <div className="modal-overlay" onClick={() => setDeleteTarget(null)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.75rem', color: '#fda4af' }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--accent-rose)' }}>
                 Confirm Deletion
               </h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>

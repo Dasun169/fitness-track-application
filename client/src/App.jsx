@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Page Imports
 import Login from './pages/Login';
@@ -41,49 +42,51 @@ const PublicRoute = ({ children }) => {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
 
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/workout/:id"
-            element={
-              <ProtectedRoute>
-                <WorkoutSetEditor />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/workout/:id"
+              element={
+                <ProtectedRoute>
+                  <WorkoutSetEditor />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

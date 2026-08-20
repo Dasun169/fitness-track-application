@@ -11,18 +11,19 @@ import {
 } from 'recharts';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import { TrendingUp, TrendingDown, Award, Target, Activity, Calendar, Users, RotateCcw } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { TrendingUp, TrendingDown, Award, Target, Activity, Calendar, RotateCcw } from 'lucide-react';
 
 const CustomTooltip = ({ active, payload, label, userFilter }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
       <div style={{
-        background: '#0f172a',
+        background: 'var(--bg-modal)',
         border: '1px solid var(--border-glow)',
         borderRadius: 'var(--radius-md)',
         padding: '0.85rem 1.15rem',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.6)',
+        boxShadow: 'var(--shadow-modal)',
         minWidth: '180px'
       }}>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.35rem', fontWeight: 600 }}>
@@ -34,7 +35,7 @@ const CustomTooltip = ({ active, payload, label, userFilter }) => {
             <span style={{ color: entry.color, fontWeight: 700, fontSize: '0.875rem' }}>
               {entry.name}:
             </span>
-            <strong style={{ color: '#f8fafc', fontSize: '0.95rem' }}>
+            <strong style={{ color: 'var(--text-main)', fontSize: '0.95rem' }}>
               {entry.value} kg
             </strong>
           </div>
@@ -47,6 +48,7 @@ const CustomTooltip = ({ active, payload, label, userFilter }) => {
 
 const ProgressChart = () => {
   const { user } = useAuth();
+  const { theme } = useTheme();
 
   const [exercisesList, setExercisesList] = useState([]);
   const [workoutSetsList, setWorkoutSetsList] = useState([]);
@@ -180,29 +182,31 @@ const ProgressChart = () => {
     setEndDate('');
   };
 
+  const isLight = theme === 'light';
+
   return (
-    <div className="glass-card" style={{ padding: '1.75rem', marginTop: '2rem' }}>
+    <div className="glass-card" style={{ padding: '1.5rem', marginTop: '2rem' }}>
       {/* Header & Main Selectors */}
       <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', marginBottom: '1.5rem' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
             <Activity color="var(--primary-cyan)" size={22} />
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 700 }}>Exercise Analytics & Comparison</h2>
+            <h2 style={{ fontSize: '1.35rem', fontWeight: 700 }}>Exercise Analytics & Comparison</h2>
           </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
             Compare user performance lines & analyze weight progression over custom date periods
           </p>
         </div>
 
         {exercisesList.length > 0 && (
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap', alignItems: 'center', width: '100%', maxWidth: '600px' }}>
             {/* Workout Set Selector */}
-            <div style={{ minWidth: '170px' }}>
+            <div style={{ flex: 1, minWidth: '150px' }}>
               <select
                 className="form-control"
                 value={selectedWorkoutSetId}
                 onChange={(e) => setSelectedWorkoutSetId(e.target.value)}
-                style={{ fontSize: '0.875rem' }}
+                style={{ fontSize: '0.85rem' }}
               >
                 <option value="">All Workout Sets</option>
                 {workoutSetsList.map((set) => (
@@ -214,12 +218,12 @@ const ProgressChart = () => {
             </div>
 
             {/* Exercise Selector */}
-            <div style={{ minWidth: '170px' }}>
+            <div style={{ flex: 1, minWidth: '150px' }}>
               <select
                 className="form-control"
                 value={selectedExercise}
                 onChange={(e) => setSelectedExercise(e.target.value)}
-                style={{ fontWeight: 700, color: 'var(--primary-cyan)', borderColor: 'var(--border-glow)', fontSize: '0.875rem' }}
+                style={{ fontWeight: 700, color: 'var(--primary-cyan)', borderColor: 'var(--border-glow)', fontSize: '0.85rem' }}
               >
                 {exercisesList.map((ex) => (
                   <option key={ex} value={ex}>
@@ -230,12 +234,12 @@ const ProgressChart = () => {
             </div>
 
             {/* User Performance Dropdown (Me vs Other vs Both) */}
-            <div style={{ minWidth: '190px' }}>
+            <div style={{ flex: 1, minWidth: '170px' }}>
               <select
                 className="form-control"
                 value={userFilter}
                 onChange={(e) => setUserFilter(e.target.value)}
-                style={{ fontWeight: 700, color: '#f59e0b', borderColor: 'rgba(245, 158, 11, 0.4)', fontSize: '0.875rem' }}
+                style={{ fontWeight: 700, color: 'var(--accent-amber)', borderColor: 'rgba(245, 158, 11, 0.4)', fontSize: '0.85rem' }}
               >
                 <option value="both">⚡ Compare Both Users</option>
                 <option value="dasun_navindu">👤 dasun_navindu</option>
@@ -247,38 +251,38 @@ const ProgressChart = () => {
       </div>
 
       {/* Date Period Filter Bar */}
-      <div style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '0.85rem 1.25rem', marginBottom: '1.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600 }}>
+      <div style={{ background: 'var(--bg-glass)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '0.75rem 1.15rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.85rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.825rem', fontWeight: 600 }}>
           <Calendar size={16} color="var(--primary-cyan)" />
           <span>Date Period Filter:</span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>From:</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <span style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>From:</span>
             <input
               type="date"
               className="form-control"
               value={startDate || defaultMinDate}
               onChange={(e) => setStartDate(e.target.value)}
-              style={{ padding: '0.35rem 0.6rem', fontSize: '0.85rem', width: '145px' }}
+              style={{ padding: '0.3rem 0.5rem', fontSize: '0.825rem', width: '135px' }}
             />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>To:</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <span style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>To:</span>
             <input
               type="date"
               className="form-control"
               value={endDate || defaultMaxDate}
               onChange={(e) => setEndDate(e.target.value)}
-              style={{ padding: '0.35rem 0.6rem', fontSize: '0.85rem', width: '145px' }}
+              style={{ padding: '0.3rem 0.5rem', fontSize: '0.825rem', width: '135px' }}
             />
           </div>
 
           {(startDate || endDate) && (
-            <button onClick={handleResetDates} className="btn btn-secondary btn-sm" style={{ padding: '0.35rem 0.6rem', fontSize: '0.85rem' }}>
-              <RotateCcw size={14} />
+            <button onClick={handleResetDates} className="btn btn-secondary btn-sm" style={{ padding: '0.3rem 0.55rem', fontSize: '0.8rem' }}>
+              <RotateCcw size={13} />
               <span>Reset</span>
             </button>
           )}
@@ -303,34 +307,34 @@ const ProgressChart = () => {
       ) : (
         <>
           {/* Stats Summary Cards */}
-          <div className="grid-3" style={{ marginBottom: '2rem' }}>
-            <div style={{ background: 'rgba(15, 23, 42, 0.7)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '1rem 1.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 600 }}>
-                <Target size={16} color="var(--primary-cyan)" />
+          <div className="grid-3" style={{ marginBottom: '1.75rem' }}>
+            <div style={{ background: 'var(--bg-glass)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '0.85rem 1.15rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.775rem', fontWeight: 600 }}>
+                <Target size={15} color="var(--primary-cyan)" />
                 CURRENT WEIGHT
               </div>
-              <p style={{ fontSize: '1.5rem', fontWeight: 800, marginTop: '0.35rem', color: 'var(--text-main)' }}>
+              <p style={{ fontSize: '1.4rem', fontWeight: 800, marginTop: '0.25rem', color: 'var(--text-main)' }}>
                 {stats.current !== null ? `${stats.current} kg` : '—'}
               </p>
             </div>
 
-            <div style={{ background: 'rgba(15, 23, 42, 0.7)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '1rem 1.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 600 }}>
-                <Award size={16} color="var(--accent-amber)" />
+            <div style={{ background: 'var(--bg-glass)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '0.85rem 1.15rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.775rem', fontWeight: 600 }}>
+                <Award size={15} color="var(--accent-amber)" />
                 PERSONAL RECORD (BEST)
               </div>
-              <p style={{ fontSize: '1.5rem', fontWeight: 800, marginTop: '0.35rem', color: 'var(--accent-amber)' }}>
+              <p style={{ fontSize: '1.4rem', fontWeight: 800, marginTop: '0.25rem', color: 'var(--accent-amber)' }}>
                 {stats.best !== null ? `${stats.best} kg` : '—'}
               </p>
             </div>
 
-            <div style={{ background: 'rgba(15, 23, 42, 0.7)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '1rem 1.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 600 }}>
-                {stats.trend >= 0 ? <TrendingUp size={16} color="var(--accent-emerald)" /> : <TrendingDown size={16} color="var(--accent-rose)" />}
+            <div style={{ background: 'var(--bg-glass)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '0.85rem 1.15rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.775rem', fontWeight: 600 }}>
+                {stats.trend >= 0 ? <TrendingUp size={15} color="var(--accent-emerald)" /> : <TrendingDown size={15} color="var(--accent-rose)" />}
                 PROGRESS TREND
               </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginTop: '0.35rem' }}>
-                <p style={{ fontSize: '1.5rem', fontWeight: 800, color: stats.trend >= 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginTop: '0.25rem' }}>
+                <p style={{ fontSize: '1.4rem', fontWeight: 800, color: stats.trend >= 0 ? 'var(--accent-emerald)' : 'var(--accent-rose)' }}>
                   {stats.trend !== null ? (stats.trend > 0 ? `+${stats.trend} kg` : `${stats.trend} kg`) : '—'}
                 </p>
                 {stats.average !== null && <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>avg: {stats.average} kg</span>}
@@ -339,49 +343,49 @@ const ProgressChart = () => {
           </div>
 
           {/* Interactive Comparison Line Chart */}
-          <div style={{ width: '100%', height: 340, padding: '0.5rem 0' }}>
+          <div style={{ width: '100%', height: 320, padding: '0.5rem 0' }}>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+              <LineChart data={chartData} margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.06)'} />
                 <XAxis
                   dataKey="formattedDate"
-                  stroke="#64748b"
-                  tick={{ fill: '#94a3b8', fontSize: 12 }}
+                  stroke={isLight ? '#475569' : '#64748b'}
+                  tick={{ fill: isLight ? '#334155' : '#94a3b8', fontSize: 11 }}
                   dy={10}
                 />
                 <YAxis
-                  stroke="#64748b"
-                  tick={{ fill: '#94a3b8', fontSize: 12 }}
+                  stroke={isLight ? '#475569' : '#64748b'}
+                  tick={{ fill: isLight ? '#334155' : '#94a3b8', fontSize: 11 }}
                   unit=" kg"
                   domain={['dataMin - 5', 'dataMax + 5']}
                 />
                 <Tooltip content={<CustomTooltip userFilter={userFilter} />} />
-                <Legend wrapperStyle={{ paddingTop: '15px' }} />
+                <Legend wrapperStyle={{ paddingTop: '12px' }} />
 
-                {/* dasun_navindu Line (Cyan #00f2fe) */}
+                {/* dasun_navindu Line */}
                 {(userFilter === 'both' || userFilter === 'dasun_navindu') && (
                   <Line
                     type="monotone"
                     dataKey="dasun_navindu"
                     name="dasun_navindu (kg)"
-                    stroke="#00f2fe"
+                    stroke={isLight ? '#0284c7' : '#00f2fe'}
                     strokeWidth={3}
-                    dot={{ fill: '#00f2fe', r: 5, strokeWidth: 2, stroke: '#0b0f19' }}
-                    activeDot={{ r: 8, stroke: '#38bdf8', strokeWidth: 3 }}
+                    dot={{ fill: isLight ? '#0284c7' : '#00f2fe', r: 4, strokeWidth: 2, stroke: isLight ? '#ffffff' : '#0b0f19' }}
+                    activeDot={{ r: 7, stroke: '#38bdf8', strokeWidth: 3 }}
                     connectNulls
                   />
                 )}
 
-                {/* gayan_maduranga Line (Amber #f59e0b) */}
+                {/* gayan_maduranga Line */}
                 {(userFilter === 'both' || userFilter === 'gayan_maduranga') && (
                   <Line
                     type="monotone"
                     dataKey="gayan_maduranga"
                     name="gayan_maduranga (kg)"
-                    stroke="#f59e0b"
+                    stroke={isLight ? '#d97706' : '#f59e0b'}
                     strokeWidth={3}
-                    dot={{ fill: '#f59e0b', r: 5, strokeWidth: 2, stroke: '#0b0f19' }}
-                    activeDot={{ r: 8, stroke: '#fbbf24', strokeWidth: 3 }}
+                    dot={{ fill: isLight ? '#d97706' : '#f59e0b', r: 4, strokeWidth: 2, stroke: isLight ? '#ffffff' : '#0b0f19' }}
+                    activeDot={{ r: 7, stroke: '#fbbf24', strokeWidth: 3 }}
                     connectNulls
                   />
                 )}

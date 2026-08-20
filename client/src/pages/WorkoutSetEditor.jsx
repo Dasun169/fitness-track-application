@@ -243,32 +243,32 @@ const WorkoutSetEditor = () => {
 
       <main className="main-content">
         {/* Navigation & Actions Top Bar */}
-        <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+        <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
           <button onClick={() => navigate('/')} className="btn btn-secondary btn-sm">
             <ArrowLeft size={16} />
-            <span>Back to Dashboard</span>
+            <span>Dashboard</span>
           </button>
 
           {workoutSet && (
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
               <button onClick={() => setIsAddDateOpen(true)} className="btn btn-secondary btn-sm">
-                <Columns size={16} color="var(--primary-cyan)" />
-                <span>+ Add Date Column</span>
+                <Columns size={15} color="var(--primary-cyan)" />
+                <span>+ Date</span>
               </button>
 
               <button onClick={() => setIsAddExerciseOpen(true)} className="btn btn-secondary btn-sm">
-                <Rows size={16} color="var(--accent-amber)" />
-                <span>+ Add Exercise Row</span>
+                <Rows size={15} color="var(--accent-amber)" />
+                <span>+ Exercise</span>
               </button>
 
               <button onClick={() => setIsEditMode(!isEditMode)} className="btn btn-secondary btn-sm">
-                {isEditMode ? <Eye size={16} /> : <Edit3 size={16} />}
-                <span>{isEditMode ? 'View Mode' : 'Edit Mode'}</span>
+                {isEditMode ? <Eye size={15} /> : <Edit3 size={15} />}
+                <span>{isEditMode ? 'View' : 'Edit'}</span>
               </button>
 
               <button onClick={handleSaveMatrix} className="btn btn-primary btn-sm" disabled={saving}>
-                <Save size={16} />
-                <span>{saving ? 'Saving Grid...' : 'Save All Changes'}</span>
+                <Save size={15} />
+                <span>{saving ? 'Saving...' : 'Save Matrix'}</span>
               </button>
             </div>
           )}
@@ -301,10 +301,10 @@ const WorkoutSetEditor = () => {
         ) : (
           <div>
             {/* Set Overview Header Card */}
-            <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '1.75rem' }}>
+            <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.35rem', flexWrap: 'wrap' }}>
                     <span className="badge badge-cyan">
                       <Calendar size={13} />
                       {MONTH_NAMES[workoutSet.month - 1]} {workoutSet.year}
@@ -312,21 +312,18 @@ const WorkoutSetEditor = () => {
                     <span className={`badge ${isEditMode ? 'badge-amber' : 'badge-emerald'}`}>
                       {isEditMode ? 'Matrix Editing Mode' : 'Read-Only View'}
                     </span>
-                    <span className="badge badge-cyan" style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa' }}>
-                      Shared Routine Template
-                    </span>
                   </div>
 
-                  <h1 style={{ fontSize: '1.75rem', fontWeight: 800 }}>{workoutSet.name}</h1>
+                  <h1 style={{ fontSize: '1.6rem', fontWeight: 800 }}>{workoutSet.name}</h1>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.875rem' }}>
+                <div style={{ display: 'flex', gap: '1.25rem', fontSize: '0.85rem' }}>
                   <div>
                     <span style={{ color: 'var(--text-muted)' }}>Gym Days: </span>
                     <strong style={{ color: 'var(--primary-cyan)' }}>{dates.length} days</strong>
                   </div>
                   <div>
-                    <span style={{ color: 'var(--text-muted)' }}>Exercise Rows: </span>
+                    <span style={{ color: 'var(--text-muted)' }}>Exercises: </span>
                     <strong style={{ color: 'var(--accent-amber)' }}>{exerciseNames.length} rows</strong>
                   </div>
                 </div>
@@ -334,21 +331,21 @@ const WorkoutSetEditor = () => {
             </div>
 
             {/* Matrix Table Grid Container */}
-            <div className="glass-card" style={{ padding: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+            <div className="glass-card" style={{ padding: '1.25rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Dumbbell size={22} color="var(--primary-cyan)" />
-                  <h2 style={{ fontSize: '1.3rem', fontWeight: 700 }}>Exercise Matrix Grid</h2>
+                  <Dumbbell size={20} color="var(--primary-cyan)" />
+                  <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Exercise Matrix Grid</h2>
                 </div>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  Compact Format (MM/DD) • Shared Rows & Dates • Personal Weights per User
+                <p style={{ fontSize: '0.775rem', color: 'var(--text-muted)' }}>
+                  Scroll horizontally to view all dates
                 </p>
               </div>
 
               {exerciseNames.length === 0 && dates.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '3.5rem 1rem', color: 'var(--text-muted)' }}>
-                  <p style={{ marginBottom: '1rem', fontSize: '1rem' }}>No exercise rows or gym dates added to this workout set yet.</p>
-                  <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+                <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-muted)' }}>
+                  <p style={{ marginBottom: '1rem', fontSize: '0.95rem' }}>No exercise rows or gym dates added to this workout set yet.</p>
+                  <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                     <button onClick={() => setIsAddExerciseOpen(true)} className="btn btn-primary btn-sm">
                       <Plus size={16} />
                       <span>Add Exercise Row</span>
@@ -360,23 +357,23 @@ const WorkoutSetEditor = () => {
                   </div>
                 </div>
               ) : (
-                <div className="table-responsive" style={{ overflowX: 'auto' }}>
+                <div className="table-responsive">
                   <table className="custom-table">
                     <thead>
                       <tr>
-                        <th style={{ width: '180px', minWidth: '160px', background: 'rgba(15, 23, 42, 0.95)', position: 'sticky', left: 0, zIndex: 5 }}>
+                        <th style={{ width: '160px', minWidth: '140px', background: 'var(--bg-table-header)', position: 'sticky', left: 0, zIndex: 5 }}>
                           Exercise Name
                         </th>
                         {dates.map((dStr) => (
-                          <th key={dStr} style={{ textAlign: 'center', width: '80px', minWidth: '70px', padding: '0.5rem 0.25rem' }} title={dStr}>
+                          <th key={dStr} style={{ textAlign: 'center', width: '75px', minWidth: '65px', padding: '0.5rem 0.2rem' }} title={dStr}>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.15rem' }}>
-                              <span style={{ color: 'var(--primary-cyan)', fontWeight: 800, fontSize: '0.9rem', letterSpacing: '-0.02em' }}>
+                              <span style={{ color: 'var(--primary-cyan)', fontWeight: 800, fontSize: '0.85rem' }}>
                                 {formatDateHeader(dStr)}
                               </span>
                               <button
                                 type="button"
                                 onClick={() => handleDeleteDateColumn(dStr)}
-                                style={{ background: 'transparent', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', padding: '1px' }}
+                                style={{ background: 'transparent', border: 'none', color: 'var(--text-dim)', cursor: 'pointer', padding: '2px' }}
                                 title={`Delete column ${dStr}`}
                               >
                                 <Trash2 size={11} />
@@ -384,12 +381,12 @@ const WorkoutSetEditor = () => {
                             </div>
                           </th>
                         ))}
-                        <th style={{ width: '60px', textAlign: 'center' }}>
+                        <th style={{ width: '55px', textAlign: 'center' }}>
                           <button
                             type="button"
                             onClick={() => setIsAddDateOpen(true)}
                             className="btn btn-secondary btn-sm"
-                            style={{ padding: '0.15rem 0.4rem', fontSize: '0.75rem' }}
+                            style={{ padding: '0.15rem 0.35rem', fontSize: '0.75rem' }}
                             title="Add new Date column"
                           >
                             + Date
@@ -401,9 +398,9 @@ const WorkoutSetEditor = () => {
                       {exerciseNames.map((exName) => (
                         <tr key={exName}>
                           {/* Row Header: Exercise Name */}
-                          <td style={{ fontWeight: 700, color: 'var(--text-main)', background: 'rgba(15, 23, 42, 0.85)', position: 'sticky', left: 0, zIndex: 4 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
-                              <span style={{ textTransform: 'capitalize', fontSize: '0.9rem' }}>{exName}</span>
+                          <td style={{ fontWeight: 700, color: 'var(--text-main)', background: 'var(--bg-table-sticky)', position: 'sticky', left: 0, zIndex: 4 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.4rem' }}>
+                              <span style={{ textTransform: 'capitalize', fontSize: '0.875rem' }}>{exName}</span>
                               <button
                                 type="button"
                                 onClick={() => handleDeleteExerciseRow(exName)}
@@ -420,7 +417,7 @@ const WorkoutSetEditor = () => {
                             const val = gridState[exName] ? gridState[exName][dStr] : '';
 
                             return (
-                              <td key={`${exName}-${dStr}`} style={{ textAlign: 'center', padding: '0.4rem 0.2rem' }}>
+                              <td key={`${exName}-${dStr}`} style={{ textAlign: 'center', padding: '0.35rem 0.15rem' }}>
                                 {isEditMode ? (
                                   <input
                                     type="number"
@@ -432,22 +429,23 @@ const WorkoutSetEditor = () => {
                                     onChange={(e) => handleCellChange(exName, dStr, e.target.value)}
                                     style={{
                                       textAlign: 'center',
-                                      padding: '0.35rem 0.15rem',
-                                      fontSize: '0.875rem',
+                                      padding: '0.3rem 0.1rem',
+                                      fontSize: '0.85rem',
                                       fontWeight: 700,
-                                      width: '65px',
+                                      width: '60px',
+                                      minHeight: '36px',
                                       borderColor: val ? 'var(--primary-cyan)' : 'var(--border-color)',
-                                      background: val ? 'rgba(6, 182, 212, 0.12)' : 'rgba(15, 23, 42, 0.8)',
+                                      background: val ? 'rgba(6, 182, 212, 0.12)' : 'var(--bg-input)',
                                       borderRadius: '6px',
                                     }}
                                   />
                                 ) : (
                                   val ? (
-                                    <span className="badge badge-cyan" style={{ fontSize: '0.8rem', padding: '0.25rem 0.45rem' }}>
+                                    <span className="badge badge-cyan" style={{ fontSize: '0.775rem', padding: '0.2rem 0.4rem' }}>
                                       {val} kg
                                     </span>
                                   ) : (
-                                    <span style={{ color: 'var(--text-dim)', fontSize: '0.85rem' }}>—</span>
+                                    <span style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>—</span>
                                   )
                                 )}
                               </td>
@@ -463,22 +461,22 @@ const WorkoutSetEditor = () => {
               )}
 
               {/* Bottom Quick Row & Column Inserter */}
-              <div style={{ marginTop: '1.75rem', paddingTop: '1.25rem', borderTop: '1px dashed var(--border-color)', display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px dashed var(--border-color)', display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                   <button onClick={() => setIsAddExerciseOpen(true)} className="btn btn-secondary btn-sm">
-                    <Plus size={16} color="var(--accent-amber)" />
-                    <span>+ Add Exercise Row</span>
+                    <Plus size={15} color="var(--accent-amber)" />
+                    <span>+ Exercise Row</span>
                   </button>
 
                   <button onClick={() => setIsAddDateOpen(true)} className="btn btn-secondary btn-sm">
-                    <Plus size={16} color="var(--primary-cyan)" />
-                    <span>+ Add Gym Date Column</span>
+                    <Plus size={15} color="var(--primary-cyan)" />
+                    <span>+ Date Column</span>
                   </button>
                 </div>
 
-                <button onClick={handleSaveMatrix} className="btn btn-primary" disabled={saving}>
-                  <Save size={18} />
-                  <span>{saving ? 'Saving Changes...' : 'Save All Grid Changes'}</span>
+                <button onClick={handleSaveMatrix} className="btn btn-primary" disabled={saving} style={{ width: '100%', maxWidth: '220px' }}>
+                  <Save size={16} />
+                  <span>{saving ? 'Saving...' : 'Save Matrix'}</span>
                 </button>
               </div>
             </div>
@@ -490,7 +488,7 @@ const WorkoutSetEditor = () => {
           <div className="modal-overlay" onClick={() => setIsAddDateOpen(false)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Add New Gym Date Column</h3>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>Add New Gym Date Column</h3>
                 <button onClick={() => setIsAddDateOpen(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
                   <X size={20} />
                 </button>
@@ -526,7 +524,7 @@ const WorkoutSetEditor = () => {
           <div className="modal-overlay" onClick={() => setIsAddExerciseOpen(false)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Add New Exercise Row</h3>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>Add New Exercise Row</h3>
                 <button onClick={() => setIsAddExerciseOpen(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
                   <X size={20} />
                 </button>
@@ -538,7 +536,7 @@ const WorkoutSetEditor = () => {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="e.g. Scout, Bench Press, Bicep Curl"
+                    placeholder="e.g. Squat, Bench Press, Bicep Curl"
                     value={newExerciseInput}
                     onChange={(e) => setNewExerciseInput(e.target.value)}
                     required
