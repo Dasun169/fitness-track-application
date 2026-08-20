@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import api from '../services/api';
 import {
   ArrowLeft, Edit3, Save, X, Plus, Trash2, Calendar,
@@ -556,6 +557,7 @@ const WorkoutSetEditor = () => {
           </div>
         )}
       </main>
+      <Footer />
     </div>
   );
 };

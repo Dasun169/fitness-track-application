@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import WorkoutCard from '../components/WorkoutCard';
 import ProgressChart from '../components/ProgressChart';
 import WorkoutBarChart from '../components/WorkoutBarChart';
@@ -293,6 +294,7 @@ const Home = () => {
           </div>
         )}
       </main>
+      <Footer />
     </div>
   );
 };
